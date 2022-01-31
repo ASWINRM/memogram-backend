@@ -1,0 +1,274 @@
+import express from 'express'
+const router = express.Router()
+import asynchandler from 'express-async-handler'
+import users from '../database/model/usermodel.js'
+import Follower from '../database/model/Follower.js'
+import Profile from '../database/model/profile.js'
+import post from '../database/model/PostModel.js'
+import validator from 'validator';
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import dotenv from 'dotenv';
+const regex=/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
+import {authe} from '../Middleware/authe.js'
+import { v4 as uuidv4 } from 'uuid';
+import multer from 'multer';
+import path from 'path';
+import makepassword from './signuproute.js'
+
+dotenv.config();
+
+
+router.post('/update',asynchandler(async(req,res)=>{
+    try{
+
+        console.log("profile updatedation");
+        const {
+            bio,
+            facebook,
+            twitter,
+            instagram,
+            profilepicurl,
+            social
+           }=req.body.user
+           console.log(req.body.user)
+
+           console.log(bio,
+            facebook,
+            twitter,
+            instagram,
+            profilepicurl)
+
+          
+        let  userid;
+        if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
+            // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
+            const token = req.header('Authorization').replace('Bearer','').trim();
+            if(token){
+                console.log(token);
+            }
+            if (!token) {
+                return res.status(401).send("Not Authorized to access the token");
+            }
+             const {userId}  =  jwt.verify(token, process.env.jwtsecret);
+            if(userId){
+                // console.log(jwt.verify(token, process.env.jwtsecret));
+                // console.log(userId);
+                userid = userId;
+                console.log(userid);
+              
+            }else{
+               console.log("Sorry we could not found user");
+            }
+        }
+       
+
+            let profilefields={}
+    
+            profilefields.user=userid;
+            if(bio){
+                profilefields.bio=bio;
+                // profile[0].bio=bio;
+            }
+            
+           profilefields.social={ }
+           if(facebook){
+               profilefields.social['facebook']=facebook;
+              
+            //    profile[0].social.facebook=facebook;
+           }else{
+            profilefields.social['facebook']=social.facebook;
+           }
+           if(twitter){
+               profilefields.social['twitter']=twitter;
+            //    profile[0].social.twitter=twitter;
+           }else{
+            profilefields.social['twitter']=social.twitter
+           }
+           if(instagram){
+               profilefields.social['instagram']=instagram;
+            //    profile[0].social.instagram=instagram;
+           }else{
+            profilefields.social['instagram']=social.instagram;
+           }
+    
+           let profile=await Profile.findOneAndUpdate({user:userid},{$set:profilefields},{new:true});
+            
+    
+           
+    
+           if(profilepicurl && profile){
+            //    console.log(profile);
+               let user=await users.findById(userid);
+               user.profilepicurl=profilepicurl;
+               await user.save();
+            //    console.log("profile updation successfull")
+               return res.status(200).send("updated");
+           }else if(profile){
+            
+            //    console.log(profile);
+            //    console.log("profile updation successfull")
+               return res.status(200).send("updated");
+           }
+           
+    }catch(e){
+        // console.log(e);
+    }
+}))
+
+
+router.get('/:username',asynchandler(async(req,res)=>{
+
+    try{
+        let username=req.params.username;
+
+        let user=await users.find({username:username});
+    
+        if(!user){
+            return res.status(400).send("user not found");
+        }
+        
+        let profile=await Profile.find({user:user[0]._id}).populate('user') 
+    
+        let profilefollow=await Follower.find({user:user[0]._id})
+        
+        let profilefollowstats=await Follower.findById(profilefollow[0]._id).populate('following.user followers.user');
+    
+        if(user && profile && profilefollowstats){
+        //    console.log(profilefollowstats);
+            return res.status(200).send({
+                user:user[0],
+                profile:profile[0],
+                followingslenght:profilefollowstats.following.length>0?profilefollowstats.following.length:0,
+                followerslength:profilefollowstats.followers.length>0?profilefollowstats.followers.length:0,
+                userfollowings: profilefollowstats.following,
+                userfollowers:profilefollowstats.followers
+
+            });
+        }
+    }catch(e){
+        // console.log(e);
+        return res.status(200).send("best path");
+    }
+
+
+   
+
+}))
+
+router.post('/update/password',asynchandler(async(req,res)=>{
+
+    const {currentpassword,username,newpassword}=req.body;
+
+    // console.log(currentpassword,newpassword)
+
+    try{
+        let  userid;
+        if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
+            console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
+            const token = req.header('Authorization').replace('Bearer','').trim();
+            // if(token){
+            //     console.log(token);
+            // }
+            if (!token) {
+                return res.status(401).send("Not Authorized to access the token");
+            }
+             const {userId}  =  jwt.verify(token, process.env.jwtsecret);
+            if(userId){
+                // console.log(jwt.verify(token, process.env.jwtsecret));
+                // console.log(userId);
+                userid = userId;
+                // console.log(userid); 
+            }else{
+            //    console.log("Sorry we could not found user");
+            }
+            let user=await users.findById(userid);
+            
+           
+            
+           
+             if(user){
+
+                //  console.log(user);
+                //  if(username && username.length>0){
+                //      user.username=username;
+                //  }
+                let isPassword=await bcrypt.compare(currentpassword,user.password);
+    
+                if(isPassword){
+                //    console.log("ispassword")
+                   
+                   const salt=await bcrypt.genSalt(10)
+                    const updatedpasssword= bcrypt.hashSync(newpassword,salt)
+                   let updateduser=await users.findByIdAndUpdate(userid,{password:updatedpasssword},{new:true});
+                   if(updateduser){
+                    //    console.log("updated user:",updateduser)
+                    //    console.log("password updated")
+                       return res.status(200).send("password updated")
+                   }
+                  
+                }else{
+                //   console.log("The password does'nt match")
+                    return res.status(200).send("The password does'nt match");
+                }
+             }else{
+                 return res.status(400).send("user could not found")
+             }
+              
+        }
+    
+    
+    
+    }catch(e){
+
+    }
+  
+}))
+
+
+
+router.post('/settings/messagepopup',asynchandler(async(req,res)=>{
+
+    try{
+        let  userid;
+        if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
+            // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
+            const token = req.header('Authorization').replace('Bearer','').trim();
+            if(token){
+                console.log(token);
+            }
+            if (!token) {
+                return res.status(401).send("Not Authorized to access the token");
+            }
+             const {userId}  =  jwt.verify(token, process.env.jwtsecret);
+            if(userId){
+                // console.log(jwt.verify(token, process.env.jwtsecret));
+                // console.log(userId);
+                userid = userId;
+                // console.log(userid); 
+            }else{
+            //    console.log("Sorry we could not found user");
+            }
+        }
+
+        let user=await users.findById(userid);
+
+        if(user.newMessagepopup){
+            user.newMessagepopup=false;
+            await user.save();
+        }else{
+            user.newMessagepopup=true;
+            await user.save();
+        }
+
+        return res.status(200).send("successfull");
+
+
+    }catch(e){
+        // console.log(e);
+       return res.status(500).send("not successfull")
+    }
+}))
+
+
+export default router
