@@ -113,7 +113,7 @@ io.sockets.on('connection',(socket)=>{
 app.get('/',(req,res)=>{
     res.status(200).send("API is Running")
 })
- server.listen(5000, (req, res) => {
+ server.listen(process.env.PORT || 5000, (req, res) => {
     // console.log("Server is running on the port 5000")
 })
 app.use('/api/login',loginroute);
