@@ -242,7 +242,7 @@ router.post('/liking/:id',asynchandler(async(req,res)=>{
 
         if(liked){
            
-            return res.status(401).send("The post is already liked");
+            return res.status(200).send("The post is already liked");
         }
         
         await posts.likes.unshift({user:userid});
