@@ -216,7 +216,7 @@ router.post('/liking/:id',asynchandler(async(req,res)=>{
     const id=req.params.id;
 
     try{
-       
+       console.log("mapla liking kulla irukom")
         if (req.header('Authorization') 
         || req.header('Authorization').startsWith('Bearer')) {
             console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
@@ -297,6 +297,8 @@ router.post('/dislike/:id',asynchandler(async(req,res)=>{
         let posts=await post.findById(id);
  
         if(posts){
+            console.log("mappi post ye kandupiduchutom")
+            console.log(posts.likes)
             let unliked=await posts.likes.filter((like)=>like.user.toString()==userid.toString()).length===0;
 
             if(unliked){
@@ -309,7 +311,7 @@ router.post('/dislike/:id',asynchandler(async(req,res)=>{
             await posts.likes.splice(index,1);
             await posts.save();
 
-            let notification=await axios.post(`http://localhost:5000/api/notification/removeLikeNotification`,{
+            let notification=await axios.post(`https://memogramapp.herokuapp.com/api/notification/removeLikeNotification`,{
             user:userid,
              usertoNotify:posts.user,
              postId:id
@@ -375,7 +377,7 @@ router.post('/commenting/:id',asynchandler(async(req,res)=>{
     const {text}=req.body;
     const id=req.params.id;
     
-
+console.log("mapla in commenting")
     try{
         if (req.header('Authorization') 
         || req.header('Authorization').startsWith('Bearer')) {
@@ -422,12 +424,26 @@ router.post('/commenting/:id',asynchandler(async(req,res)=>{
              commentId:newcomment.id
            })
         if(notification){
+            let newres=await axios.get(`http://localhost:5000/api/chat/finduser/${userid}` , {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
             // console.log(notification)
-            return res.status(200).send(newcomment);
+            if(newres){
+                console.log(newres)
+                const newfun={ id:newcomment.id,
+                    user:newres.data,
+                    text:newcomment.text,
+                    date:newcomment.date}
+                
+                return res.status(200).json(newfun);
+            }
+          
         }
        
     }catch(e){
-       
+        console.log(e)
     //    console.log(e);
        return res.status(500).send("Server Error");
     }
@@ -481,7 +497,7 @@ router.put('/comment/delete/:postid/:commentid',asynchandler(async(req,res)=>{
                 user:userid.toString(),
                  usertoNotify:posts.user,
                  postId:postid,
-                 text:text,
+                 text:comment.text,
                  commentId:comment.id
                })
                if(notification){
@@ -503,7 +519,7 @@ router.put('/comment/delete/:postid/:commentid',asynchandler(async(req,res)=>{
        
 
     }catch(e){
-    
+      console.log(e)
       return res.status(500).send("Server Error");
     }
 }))
