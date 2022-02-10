@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import path from 'path';
 import users from './database/model/usermodel.js'
-
+import axios from 'axios'
 const app = express();
 // import http from 'http'
 // const servers=http.Server(app)
@@ -42,8 +42,8 @@ io.sockets.on('connection',(socket)=>{
 
     socket.on('join',async({userId})=>{
         const users=await adduser(userId,socket.id)
-        // console.log("userid"+userId)
-        // console.log(users)
+        console.log("userid"+userId)
+        console.log(users)
         setInterval(()=>{
            io.emit("connectedusers",{users:users.filter((user)=>user.userId!==userId)})
         },10000)
@@ -101,7 +101,74 @@ io.sockets.on('connection',(socket)=>{
     })
 
 
+   socket.on('likepost',async({userId,postId})=>{
+    let usersconnected=AllConnectedUsers();
+    console.log(usersconnected)
+    try{
+       
+            
+         console.log(userId)
+          let resp=await axios.post(`http://localhost:5000/api/post/liking/${postId}`,{userId:userId});
+           console.log(resp);
+           if(resp && resp.data.comment==="successfully liked"){
+            io.emit('postliked')
+            let receiveruser= await usersconnected.find((user)=>user.userId.toString()===resp.data.user.toString());
+             if(receiveruser){
+                io.to(receiveruser.socketId).emit('newlikenotification',{data:resp.data})
+             }
+            
+           }
+        
+        
+    }catch(e){
+           console.log(e);
+     }
+    })
 
+    socket.on('dislikepost',async({userId,postId})=>{
+        try{
+            console.log(userId)
+            let resp=await axios.post(`http://localhost:5000/api/post/dislike/${postId}`,{userId:userId});
+            console.log(resp)
+            if(resp && resp.data==="Successfully disliked"){
+                io.emit('postdisliked')
+            }
+        }catch(e){
+            console.log(e)
+        }
+      
+        
+    })
+
+   socket.on("deletecomment",async({userId,commentId,postId})=>{
+       console.log("delete comment")
+       try{
+        var res=await axios.put(`http://localhost:5000/api/post/comment/delete/`+postId+'/'+commentId,{userid:userId});
+        if(res.data==="Comment Deleted Successfully"){
+            io.emit("commentdeleted")
+        }
+       }catch(e){
+           console.log(e)
+       }
+   })
+
+   socket.on('commentpost',async({postId, user, text})=>{
+    try{
+        console.log("commentpost")
+        const res=await axios.post('http://localhost:5000/api/post/commenting/'+postId,{text,userid:user._id})
+        if(res){
+            console.log(res.data)
+            let usersconnected=AllConnectedUsers();
+            
+            let receiveruser= await usersconnected.find((user)=>user.userId.toString()===res.data.user.toString());
+            console.log(receiveruser);
+            io.emit('commented',{data:res.data.comment});
+            io.to(receiveruser.socketId).emit('newcommentNotification',{data:res.data})
+          }
+       }catch(e){
+           console.log(e)
+       }
+   })
 
     socket.on('disconnect',()=>{
         removeuser(socket.id)

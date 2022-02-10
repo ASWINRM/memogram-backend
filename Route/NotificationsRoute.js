@@ -217,7 +217,7 @@ let posts=await post.findById(postId);
                   if(newnotificationlist){
                     let updateduser=await users.findByIdAndUpdate(usertoNotify,{unreadNotification:true},{new:true});
                     // console.log(newnotificationlist)
-                   return res.status(200).send("updated");
+                   return res.status(200).send({newNotification,notifyuser:userId});
                  }
 
         }else{
@@ -229,7 +229,7 @@ let posts=await post.findById(postId);
                   if(newnotificationlist){
                     let updateduser=await users.findByIdAndUpdate(usertoNotify,{unreadNotification:true},{new:true});
                     //   console.log(newnotificationlist)
-                      return res.status(200).send("updated")
+                      return res.status(200).send({newNotification,notifyuser:userId})
                   }
         }
     
@@ -243,6 +243,7 @@ let posts=await post.findById(postId);
 router.post('/removeLikeNotification',asynchandler(async(req,res)=>{
     const {user,usertoNotify,postId}=req.body
     try{
+        console.log(user,usertoNotify,postId)
         let userId=await users.findById(user);
         let posts=await post.findById(postId);
         let userofNotify=await users.findById(usertoNotify) 
@@ -253,31 +254,27 @@ router.post('/removeLikeNotification',asynchandler(async(req,res)=>{
                                                                            notification.post.toString()===postId);
 
         if(NotificationToRemove){
-            // console.log(NotificationToRemove)
+            console.log(NotificationToRemove)
             // console.log(usernotifications.notifications)
-            const index=usernotifications.notifications.findIndex(a=>a._id===NotificationToRemove._id)
+            const index=usernotifications.notifications.map(a => a._id.toString()).indexOf(NotificationToRemove._id.toString());
+      
             // console.log(index)
             const updatedNotification=null;
-            let newlist=null;
-            if(index>0){
-                updatedNotification=usernotifications.notifications.splice(index,1);
+            // let newlist=null;
+            if(index>=0){
+                await usernotifications.notifications.splice(index,1);
+                await  usernotifications.save()
+                console.log("updated")
+                return res.status(200).send("updated")
                 //    console.log(updatedNotification)
-                newlist=await Notification.findByIdAndUpdate(usernotifications._id,{notifications:updatedNotification},{new:true})
+                // newlist=await Notification.findByIdAndUpdate(usernotifications._id,{notifications:updatedNotification},{new:true})
 
-            }else{
-                newlist=await Notification.findByIdAndUpdate(usernotifications._id,{notifications:[]},{new:true})
-
-            }
-           
-            if(newlist){
-            //    console.log(newlist);
-               return res.status(200).send("updated")
             }
             }
         }
 
     }catch(e){
-        // console.log(e);
+        console.log(e);
         return res.status(200).send("Internal Server Error")
         
     }
@@ -315,7 +312,7 @@ router.post('/newCommentNotification',asynchandler(async(req,res)=>{
             if(newlist){
               let updateduser=await users.findByIdAndUpdate(usertoNotify,{unreadNotification:true},{new:true});
             //   console.log(newlist)
-             return res.status(200).send("updated");
+             return res.status(200).send({newnotification,notifyuser:userId})
            }
         }else{
             let newlist=await new Notification({
@@ -326,7 +323,7 @@ router.post('/newCommentNotification',asynchandler(async(req,res)=>{
             if(newlist){
                 let updateduser=await users.findByIdAndUpdate(usertoNotify,{unreadNotification:true},{new:true});
                 //   console.log(newlist)
-                  return res.status(200).send("updated")
+                  return res.status(200).send({newnotification,notifyuser:userId})
               }
         }
        

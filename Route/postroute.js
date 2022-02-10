@@ -212,30 +212,30 @@ router.get('/like/:id',authe,asynchandler(async(req,res)=>{
 }))
 
 router.post('/liking/:id',asynchandler(async(req,res)=>{
-   let userid;
+   let userid=req.body.userId
     const id=req.params.id;
 
     try{
-       console.log("mapla liking kulla irukom")
-        if (req.header('Authorization') 
-        || req.header('Authorization').startsWith('Bearer')) {
-            console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-            console.log(req.header('Authorization'));
-            const token = req.header('Authorization').replace('Bearer ', '')|| req.header('Authorization');
-            // if(token){
-            //     console.log(token);
-            // }
-            if (!token) {
-                return res.status(401).send("Not Authorized to access the token");
-            }
-            const  {userId}  = jwt.verify(token, process.env.jwtsecret);
-            if(userId){
-                // console.log(userId);
-                userid = userId;
-            }else{
-               console.log("Sorry we could not found user");
-            }
-        }
+    //    console.log("mapla liking kulla irukom")
+    //     if (req.header('Authorization') 
+    //     || req.header('Authorization').startsWith('Bearer')) {
+    //         console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
+    //         console.log(req.header('Authorization'));
+    //         const token = req.header('Authorization').replace('Bearer ', '')|| req.header('Authorization');
+    //         // if(token){
+    //         //     console.log(token);
+    //         // }
+    //         if (!token) {
+    //             return res.status(401).send("Not Authorized to access the token");
+    //         }
+    //         const  {userId}  = jwt.verify(token, process.env.jwtsecret);
+    //         if(userId){
+    //             // console.log(userId);
+    //             userid = userId;
+    //         }else{
+    //            console.log("Sorry we could not found user");
+    //         }
+    //     }
         let posts=await post.findById(id);
 
         let liked=await posts.likes.filter((like)=>like.user.toString()==userid).length>0;
@@ -248,7 +248,7 @@ router.post('/liking/:id',asynchandler(async(req,res)=>{
         await posts.likes.unshift({user:userid});
         await posts.save();
         
-        let notification=await axios.post(`http://localhost:5000/api/notification/newlikenotification`,{
+        let notification=await axios.post(`https://memogramapp.herokuapp.com/api/notification/newlikenotification`,{
             user:userid,
              usertoNotify:posts.user,
              postId:id
@@ -256,7 +256,8 @@ router.post('/liking/:id',asynchandler(async(req,res)=>{
 
         if(notification){
             // console.log(notification.data);
-            return res.status(200).send("successfully liked");
+            console.log("successfully liked in route")
+            return res.status(200).send({type:"like",comment:"successfully liked",notification:notification.data,user:posts.user});
         }
 
       
@@ -270,30 +271,30 @@ router.post('/liking/:id',asynchandler(async(req,res)=>{
 }))
 
 router.post('/dislike/:id',asynchandler(async(req,res)=>{
-    let userid;
+    let userid=req.body.userId
     const id=req.params.id;
 
     try{
        console.log("Mmapla dislike kulla irukom")
-        if (req.header('Authorization') 
-        || req.header('Authorization').startsWith('Bearer')) {
-            // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-            // console.log(req.header('Authorization'));
-            const token = req.header('Authorization').replace('Bearer ', '')|| req.header('Authorization');
-            // if(token){
-            //     console.log(token);
-            // }
-            if (!token) {
-                return res.status(401).send("Not Authorized to access the token");
-            }
-            const  {userId}  = jwt.verify(token, process.env.jwtsecret);
-            if(userId){
-                // console.log(userId);
-                userid = userId;
-            }else{
-            //    console.log("Sorry we could not found user");
-            }
-        }
+        // if (req.header('Authorization') 
+        // || req.header('Authorization').startsWith('Bearer')) {
+        //     // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
+        //     // console.log(req.header('Authorization'));
+        //     const token = req.header('Authorization').replace('Bearer ', '')|| req.header('Authorization');
+        //     // if(token){
+        //     //     console.log(token);
+        //     // }
+        //     if (!token) {
+        //         return res.status(401).send("Not Authorized to access the token");
+        //     }
+        //     const  {userId}  = jwt.verify(token, process.env.jwtsecret);
+        //     if(userId){
+        //         // console.log(userId);
+        //         userid = userId;
+        //     }else{
+        //     //    console.log("Sorry we could not found user");
+        //     }
+        // }
         let posts=await post.findById(id);
  
         if(posts){
@@ -316,7 +317,8 @@ router.post('/dislike/:id',asynchandler(async(req,res)=>{
              usertoNotify:posts.user,
              postId:id
            })
-            // console.log("successfully disliked")
+            console.log("successfully disliked in route")
+
             return res.status(200).send("Successfully disliked");
         }
         
@@ -330,27 +332,27 @@ router.post('/dislike/:id',asynchandler(async(req,res)=>{
 router.get('/comment/:id',asynchandler(async(req,res)=>{
    
     const id=req.params.id;
-let userid;
+let userid=req.body.userid
     try{
-        if (req.header('Authorization') 
-        || req.header('Authorization').startsWith('Bearer')) {
-            // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-            // console.log(req.header('Authorization'));
-            const token = req.header('Authorization').replace('Bearer ', '')|| req.header('Authorization');
-            // if(token){
-            //     console.log(token);
-            // }
-            if (!token) {
-                return res.status(401).send("Not Authorized to access the token");
-            }
-            const  {userId}  = jwt.verify(token, process.env.jwtsecret);
-            if(userId){
-                // console.log(userId);
-                userid = userId;
-            }else{
-               console.log("Sorry we could not found user");
-            }
-        }
+        // if (req.header('Authorization') 
+        // || req.header('Authorization').startsWith('Bearer')) {
+        //     // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
+        //     // console.log(req.header('Authorization'));
+        //     const token = req.header('Authorization').replace('Bearer ', '')|| req.header('Authorization');
+        //     // if(token){
+        //     //     console.log(token);
+        //     // }
+        //     if (!token) {
+        //         return res.status(401).send("Not Authorized to access the token");
+        //     }
+        //     const  {userId}  = jwt.verify(token, process.env.jwtsecret);
+        //     if(userId){
+        //         // console.log(userId);
+        //         userid = userId;
+        //     }else{
+        //        console.log("Sorry we could not found user");
+        //     }
+        // }
         let posts=await post.findById(id);
 
         if(!posts){
@@ -373,31 +375,31 @@ let userid;
 }))
 
 router.post('/commenting/:id',asynchandler(async(req,res)=>{
-    let userid;
+    let userid=req.body.userid
     const {text}=req.body;
     const id=req.params.id;
     
 console.log("mapla in commenting")
     try{
-        if (req.header('Authorization') 
-        || req.header('Authorization').startsWith('Bearer')) {
-            // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-            // console.log(req.header('Authorization'));
-            const token = req.header('Authorization').replace('Bearer ', '')|| req.header('Authorization');
-            // if(token){
-            //     console.log(token);
-            // }
-            if (!token) {
-                return res.status(401).send("Not Authorized to access the token");
-            }
-            const  {userId}  = jwt.verify(token, process.env.jwtsecret);
-            if(userId){
-                // console.log(userId);
-                userid = userId;
-            }else{
-            //    console.log("Sorry we could not found user");
-            }
-        }
+        // if (req.header('Authorization') 
+        // || req.header('Authorization').startsWith('Bearer')) {
+        //     // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
+        //     // console.log(req.header('Authorization'));
+        //     const token = req.header('Authorization').replace('Bearer ', '')|| req.header('Authorization');
+        //     // if(token){
+        //     //     console.log(token);
+        //     // }
+        //     if (!token) {
+        //         return res.status(401).send("Not Authorized to access the token");
+        //     }
+        //     const  {userId}  = jwt.verify(token, process.env.jwtsecret);
+        //     if(userId){
+        //         // console.log(userId);
+        //         userid = userId;
+        //     }else{
+        //     //    console.log("Sorry we could not found user");
+        //     }
+        // }
         let posts=await post.findById(id);
 
         if(!posts){
@@ -416,7 +418,7 @@ console.log("mapla in commenting")
         await posts.save();
 
 
-        let notification=await axios.post(`http://localhost:5000/api/notification/newCommentNotification`,{
+        let notification=await axios.post(`https://memogramapp.herokuapp.com/api/notification/newCommentNotification`,{
              user:userid.toString(),
              usertoNotify:posts.user,
              postId:id,
@@ -424,7 +426,7 @@ console.log("mapla in commenting")
              commentId:newcomment.id
            })
         if(notification){
-            let newres=await axios.get(`http://localhost:5000/api/chat/finduser/${userid}` , {
+            let newres=await axios.get(`https://memogramapp.herokuapp.com/api/chat/finduser/${userid}` , {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -437,7 +439,7 @@ console.log("mapla in commenting")
                     text:newcomment.text,
                     date:newcomment.date}
                 
-                return res.status(200).json(newfun);
+                return res.status(200).send({type:"comment",comment:newfun,notification: notification.data,user:posts.user});
             }
           
         }
@@ -453,33 +455,36 @@ router.put('/comment/delete/:postid/:commentid',asynchandler(async(req,res)=>{
    
     const postid=req.params.postid;
     const commentid=req.params.commentid;
-    let userid;
+    let userid=req.body.userid
+    console.log("comment deleting")
+    console.log(commentid)
     try{
-        if (req.header('Authorization') 
-        || req.header('Authorization').startsWith('Bearer')) {
-            // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-            // console.log(req.header('Authorization'));
-            const token = req.header('Authorization').replace('Bearer ', '')|| req.header('Authorization');
-            // if(token){
-            //     console.log(token);
-            // }
-            if (!token) {
-                return res.status(401).send("Not Authorized to access the token");
-            }
-            const  {userId}  = jwt.verify(token, process.env.jwtsecret);
-            if(userId){
-                // console.log(userId);
-                userid = userId;
-            }else{
-            //    console.log("Sorry we could not found user");
-            }
-        }
+        // if (req.header('Authorization') 
+        // || req.header('Authorization').startsWith('Bearer')) {
+        //     // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
+        //     // console.log(req.header('Authorization'));
+        //     const token = req.header('Authorization').replace('Bearer ', '')|| req.header('Authorization');
+        //     // if(token){
+        //     //     console.log(token);
+        //     // }
+        //     if (!token) {
+        //         return res.status(401).send("Not Authorized to access the token");
+        //     }
+        //     const  {userId}  = jwt.verify(token, process.env.jwtsecret);
+        //     if(userId){
+        //         // console.log(userId);
+        //         userid = userId;
+        //     }else{
+        //     //    console.log("Sorry we could not found user");
+        //     }
+        // }
         
         let posts=await post.findById(postid);
         if(posts){
+            console.log(posts.comments)
             // console.log(posts.comments);
             // console.log(commentid);
-            let comment=await posts.comments.find((comment)=>comment.id.toString().trim()===commentid.toString().trim());
+            let comment=await posts.comments.find((comment)=>comment._id.toString().trim()===commentid.toString().trim());
 
             if(!comment){
                 // console.log(comment);
@@ -493,19 +498,21 @@ router.put('/comment/delete/:postid/:commentid',asynchandler(async(req,res)=>{
              await posts.comments.splice(index,1);
              await posts.save();
             //  console.log("Comment Deleted Successfully");
-             let notification=await axios.post(`http://localhost:5000/api/notification/newCommentNotification`,{
-                user:userid.toString(),
+             let notification=await axios.post(`https://memogramapp.herokuapp.com/api/notification/removeCommentNotification`,{
+                  user:userid.toString(),
                  usertoNotify:posts.user,
                  postId:postid,
                  text:comment.text,
                  commentId:comment.id
                })
                if(notification){
-                return res.status(200).send("Comment Deleted Successfully");
+                   console.log("commentdeleted")
+
+                return res.status(200).send("Comment Deleted Successfully" );
 
                }
            
-                return res.status(200).send("Comment Deleted Successfully");
+              
 
               
             }else{
