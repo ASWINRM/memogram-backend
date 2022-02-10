@@ -10,6 +10,7 @@ import bcrypt from "bcryptjs";
 import dotenv from 'dotenv';
 import Chat from '../database/model/Chatmodel.js'
 import MessageNotification from '../database/model/MessageNotificationModel.js'
+import Notification from '../database/model/Notification.js'
 const regex=/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 dotenv.config();
 
@@ -125,6 +126,8 @@ router.post('/',asynchandler(async(req,res)=>{
      }).save();
     
     await new Follower({user:newuser._id,followers:[],following:[]}).save();
+
+    await new Notification({user:newuser._id,notifications:[]}).save()
 
     await new Chat({user:newuser._id,chats:[]}).save();
 

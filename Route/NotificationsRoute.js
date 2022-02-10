@@ -100,6 +100,10 @@ router.get('/getuserNotifications',asynchandler(async(req,res)=>{
 
     if(notifications){
         // console.log(notifications);
+
+        if(notifications.notifications.length<=0){
+            return res.status(200).send("no notifications")
+        }
         
         return res.status(200).send(notifications.notifications);
     }
