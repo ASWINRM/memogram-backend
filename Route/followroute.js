@@ -99,7 +99,7 @@ router.post('/follow',asynchandler(async(req,res)=>{
                              }
                            }
    
-                           let notification=await axios.post(`http://localhost:5000/api/notification/newFollowerNotification`,{
+                           let notification=await axios.post(`https://memogramapp.herokuapp.com/api/notification/newFollowerNotification`,{
                              user:currentuser._id,
                              usertoNotify:followeruser._id,
                            })
@@ -306,7 +306,7 @@ router.post('/unfollow',asynchandler(async(req,res)=>{
 
 
 
-               let notification=await axios.post(`http://localhost:5000/api/notification/removeFollowerNotification`,{
+               let notification=await axios.post(`https://memogramapp.herokuapp.com/api/notification/removeFollowerNotification`,{
                              user:currentuser._id,
                              usertoNotify:unfollowuser._id,
                            })
