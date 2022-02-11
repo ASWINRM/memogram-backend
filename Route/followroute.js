@@ -38,8 +38,8 @@ router.post('/follow',asynchandler(async(req,res)=>{
     //     }
     // }
 
-    let currentuser=await users.findById(userid.trim());
-    let followeruser=await users.findById(fu_id.trim());
+    let currentuser=await users.findById(userid);
+    let followeruser=await users.findById(fu_id);
 
     if(followeruser && currentuser){
         // console.log("currentuser :"+currentuser);
