@@ -312,11 +312,7 @@ router.post('/dislike/:id',asynchandler(async(req,res)=>{
             await posts.likes.splice(index,1);
             await posts.save();
 
-            let notification=await axios.post(`https://memogramapp.herokuapp.com/api/notification/removeLikeNotification`,{
-            user:userid,
-             usertoNotify:posts.user,
-             postId:id
-           })
+            
             console.log("successfully disliked in route")
 
             return res.status(200).send("Successfully disliked");
@@ -508,10 +504,10 @@ router.put('/comment/delete/:postid/:commentid',asynchandler(async(req,res)=>{
                if(notification){
                    console.log("commentdeleted")
 
-                return res.status(200).send("Comment Deleted Successfully" );
+              
 
                }
-           
+               return res.status(200).send("Comment Deleted Successfully" );
               
 
               
