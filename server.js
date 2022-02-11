@@ -38,6 +38,19 @@ const io = new Server(server,{cors: {
     origin: "*"
   }
 });
+
+app.use('/api/login',loginroute);
+app.use('/api/signup',signuproute);
+app.use('/api/extra',extraroute);
+app.use('/api/post',postroute);
+app.use('/api/search',searchroute);
+app.use('/api/followtask',followroute);
+app.use('/api/profile',profileroute);
+app.use('/api/otp',otproute)
+app.use('/api/forgot',forgotroute)
+app.use('/api/notification',NotificationRoute)
+app.use('/api/chat',chatroute)
+
 io.sockets.on('connection',(socket)=>{
 
     socket.on('join',async({userId})=>{
@@ -206,17 +219,7 @@ app.get('/',(req,res)=>{
 server.listen(process.env.PORT || 5000, (req, res) => {
     console.log("Server is running on the port 5000")
 })
-app.use('/api/login',loginroute);
-app.use('/api/signup',signuproute);
-app.use('/api/extra',extraroute);
-app.use('/api/post',postroute);
-app.use('/api/search',searchroute);
-app.use('/api/followtask',followroute);
-app.use('/api/profile',profileroute);
-app.use('/api/otp',otproute)
-app.use('/api/forgot',forgotroute)
-app.use('/api/notification',NotificationRoute)
-app.use('/api/chat',chatroute)
+
 
 
 
