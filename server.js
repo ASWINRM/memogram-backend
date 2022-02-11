@@ -108,7 +108,7 @@ io.sockets.on('connection',(socket)=>{
        
             
          console.log(userId)
-          let resp=await axios.post(`http://localhost:5000/api/post/liking/${postId}`,{userId:userId});
+          let resp=await axios.post(`https://memogramapp.herokuapp.com/api/post/liking/${postId}`,{userId:userId});
            console.log(resp);
            if(resp && resp.data.comment==="successfully liked"){
             io.emit('postliked')
@@ -128,7 +128,7 @@ io.sockets.on('connection',(socket)=>{
     socket.on('dislikepost',async({userId,postId})=>{
         try{
             console.log(userId)
-            let resp=await axios.post(`http://localhost:5000/api/post/dislike/${postId}`,{userId:userId});
+            let resp=await axios.post(`https://memogramapp.herokuapp.com/api/post/dislike/${postId}`,{userId:userId});
             console.log(resp)
             if(resp && resp.data==="Successfully disliked"){
                 io.emit('postdisliked')
@@ -143,7 +143,7 @@ io.sockets.on('connection',(socket)=>{
    socket.on("deletecomment",async({userId,commentId,postId})=>{
        console.log("delete comment")
        try{
-        var res=await axios.put(`http://localhost:5000/api/post/comment/delete/`+postId+'/'+commentId,{userid:userId});
+        var res=await axios.put(`https://memogramapp.herokuapp.com/api/post/comment/delete/`+postId+'/'+commentId,{userid:userId});
         if(res.data==="Comment Deleted Successfully"){
             io.emit("commentdeleted")
         }
@@ -155,7 +155,7 @@ io.sockets.on('connection',(socket)=>{
    socket.on('commentpost',async({postId, user, text})=>{
     try{
         console.log("commentpost")
-        const res=await axios.post('http://localhost:5000/api/post/commenting/'+postId,{text,userid:user._id})
+        const res=await axios.post('https://memogramapp.herokuapp.com/api/post/commenting/'+postId,{text,userid:user._id})
         if(res){
             console.log(res.data)
             let usersconnected=AllConnectedUsers();
@@ -169,6 +169,25 @@ io.sockets.on('connection',(socket)=>{
            console.log(e)
        }
    })
+
+   socket.on('followrequest',async({userid,fu_id})=>{
+       try{
+        const res=await axios.post(`https://memogramapp.herokuapp.com/api/followtask/follow`,{userid:userid,fu_id:fu_id});
+
+        if(res){
+            
+            let usersconnected=AllConnectedUsers();
+            
+            let receiveruser= await usersconnected.find((user)=>user.userId.toString()===fu_id);
+            console.log(receiveruser);
+            
+            io.to(receiveruser.socketId).emit('followerNotification',{data:res.data})
+        }
+       }catch(e){
+           console.log(e)
+       }
+   })
+
 
     socket.on('disconnect',()=>{
         removeuser(socket.id)
