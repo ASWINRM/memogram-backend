@@ -14,29 +14,29 @@ dotenv.config();
 //FOLLOW
 router.post('/follow',asynchandler(async(req,res)=>{
   let {fu_id}=req.body;
-  let {userid}=req.body;
+  
   try{
-    // let  userid;
-    // if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
-    //     // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-    //     const token = req.header('Authorization').replace('Bearer','').trim();
-    //     if(token){
-    //         console.log(token);
-    //     }
-    //     if (!token) {
-    //         return res.status(401).send("Not Authorized to access the token");
-    //     }
-    //      const {userId}  =  jwt.verify(token, process.env.jwtsecret);
-    //     if(userId){
-    //         // console.log(jwt.verify(token, process.env.jwtsecret));
-    //         // console.log(userId);
-    //         userid = userId;
-    //         // console.log(userid);
+    let  userid;
+    if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
+        // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
+        const token = req.header('Authorization').replace('Bearer','').trim();
+        if(token){
+            console.log(token);
+        }
+        if (!token) {
+            return res.status(401).send("Not Authorized to access the token");
+        }
+         const {userId}  =  jwt.verify(token, process.env.jwtsecret);
+        if(userId){
+            // console.log(jwt.verify(token, process.env.jwtsecret));
+            // console.log(userId);
+            userid = userId;
+            // console.log(userid);
           
-    //     }else{
-    //     //    console.log("Sorry we could not found user");
-    //     }
-    // }
+        }else{
+        //    console.log("Sorry we could not found user");
+        }
+    }
 
     let currentuser=await users.findById(userid);
     let followeruser=await users.findById(fu_id);
