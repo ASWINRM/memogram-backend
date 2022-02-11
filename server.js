@@ -109,11 +109,13 @@ io.sockets.on('connection',(socket)=>{
             
          console.log(userId)
           let resp=await axios.post(`https://memogramapp.herokuapp.com/api/post/liking/${postId}`,{userId:userId});
-           console.log(resp);
+           console.log(resp.data);
            if(resp && resp.data.comment==="successfully liked"){
-            io.emit('postliked')
+            io.emit('postliked');
+            console.log(usersconnected)
             let receiveruser= await usersconnected.find((user)=>user.userId.toString()===resp.data.user.toString());
-             if(receiveruser){
+            
+            if(receiveruser){
                  console.log(receiveruser)
                 io.to(receiveruser.socketId).emit('newlikenotification',{data:resp.data})
              }
@@ -130,7 +132,7 @@ io.sockets.on('connection',(socket)=>{
         try{
             console.log(userId)
             let resp=await axios.post(`https://memogramapp.herokuapp.com/api/post/dislike/${postId}`,{userId:userId});
-            console.log(resp)
+            console.log(resp.data)
             if(resp && resp.data==="Successfully disliked"){
                 io.emit('postdisliked')
             }
