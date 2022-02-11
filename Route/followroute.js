@@ -42,8 +42,8 @@ router.post('/follow',asynchandler(async(req,res)=>{
     let followeruser=await users.findById(fu_id);
 
     if(followeruser && currentuser){
-        // console.log("currentuser :"+currentuser);
-        // console.log("followeruser :"+followeruser);
+        console.log("currentuser :"+currentuser);
+        console.log("followeruser :"+followeruser);
     }else{
         return res.status(404).send("users could not found");
     }
@@ -103,7 +103,7 @@ router.post('/follow',asynchandler(async(req,res)=>{
                              user:currentuser._id,
                              usertoNotify:followeruser._id,
                            })
-            //    console.log("updated");
+               console.log("updated");
 
                if(notification){
                 return res.status(200).send({type:"Follower",sender:user});
