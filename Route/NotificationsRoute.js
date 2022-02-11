@@ -36,23 +36,23 @@ router.post('/SetNotificationsRead',asynchandler(async(req,res)=>{
 
     let  usertoNotify;
     if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
-        // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
+        console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
         const token = req.header('Authorization').replace('Bearer','').trim();
-        // if(token){
-        //     console.log(token);
-        // }
+        if(token){
+            console.log(token);
+        }
         if (!token) {
             return res.status(401).send("Not Authorized to access the token");
         }
          const {userId}  =  jwt.verify(token, process.env.jwtsecret);
         if(userId){
             // console.log(jwt.verify(token, process.env.jwtsecret));
-            // console.log(userId);
+            console.log(userId);
             usertoNotify = userId;
-            // console.log(usertoNotify);
+            console.log(usertoNotify);
           
         }else{
-        //    console.log("Sorry we could not found user");
+           console.log("Sorry we could not found user");
         }
     }
     try{
@@ -60,10 +60,14 @@ router.post('/SetNotificationsRead',asynchandler(async(req,res)=>{
         let user=await users.findById(usertoNotify);
   
         if(user){
+          
             if(user.unreadNotification){
+               
               let updateduser=await users.findByIdAndUpdate(usertoNotify,{unreadNotification:false},{new:true});
                 return res.status(200).send("updated")
-          }
+            }else{
+                return res.status(200).send("updated")
+            }
         }
   
       }catch(e){
