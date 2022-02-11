@@ -159,7 +159,7 @@ router.get('/followings',asynchandler(async(req,res)=>{
         if(user){
             var followings=await Follower.find({user: userid.trim()})
             if(followings){
-                // console.log(followings[0].following);
+                console.log(followings[0].following);
                 res.status(200).send(followings[0].following);
             }
         }
@@ -170,7 +170,7 @@ router.get('/followings',asynchandler(async(req,res)=>{
     }
 }
     catch(e){
-        //  console.log(e);
+         console.log(e);
          return res.status(500).send(e);
     }
 }))
@@ -208,7 +208,7 @@ router.get('/followers',asynchandler(async(req,res)=>{
               if(user){
                   var followings=await Follower.find({user: userid.trim()})
                   if(followings){
-                    //   console.log(followings[0]);
+                      console.log(followings[0].followers);
                       res.status(200).send(followings[0].followers);
                   }
               }
@@ -219,7 +219,7 @@ router.get('/followers',asynchandler(async(req,res)=>{
           }
       }
           catch(e){
-            //    console.log(e);
+               console.log(e);
                return res.status(500).send(e);
           }
 }))
