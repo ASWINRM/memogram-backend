@@ -85,8 +85,8 @@ router.get('/getuserNotifications',asynchandler(async(req,res)=>{
         }
          const {userId}  =  jwt.verify(token, process.env.jwtsecret);
         if(userId){
-            // console.log(jwt.verify(token, process.env.jwtsecret));
-            // console.log(userId);
+            console.log(jwt.verify(token, process.env.jwtsecret));
+            console.log(userId);
             userid = userId;
             // console.log(userid);
           
@@ -99,7 +99,7 @@ router.get('/getuserNotifications',asynchandler(async(req,res)=>{
 
 
     if(notifications){
-        // console.log(notifications);
+        console.log(notifications.notifications);
 
         if(notifications.notifications.length<=0){
             return res.status(200).send("no notifications")
