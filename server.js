@@ -108,12 +108,13 @@ io.sockets.on('connection',(socket)=>{
        
             
          console.log(userId)
-          let resp=await axios.post(`https://memogramapp.herokuapp.com/api/post/liking/${postId}`,{userId:userId});
+          let resp=await axios.post(`/api/post/liking/${postId}`,{userId:userId});
            console.log(resp);
            if(resp && resp.data.comment==="successfully liked"){
             io.emit('postliked')
             let receiveruser= await usersconnected.find((user)=>user.userId.toString()===resp.data.user.toString());
              if(receiveruser){
+                 console.log("receiver")
                 io.to(receiveruser.socketId).emit('newlikenotification',{data:resp.data})
              }
             
@@ -128,7 +129,7 @@ io.sockets.on('connection',(socket)=>{
     socket.on('dislikepost',async({userId,postId})=>{
         try{
             console.log(userId)
-            let resp=await axios.post(`https://memogramapp.herokuapp.com/api/post/dislike/${postId}`,{userId:userId});
+            let resp=await axios.post(`/api/post/dislike/${postId}`,{userId:userId});
             console.log(resp)
             if(resp && resp.data==="Successfully disliked"){
                 io.emit('postdisliked')
@@ -143,7 +144,7 @@ io.sockets.on('connection',(socket)=>{
    socket.on("deletecomment",async({userId,commentId,postId})=>{
        console.log("delete comment")
        try{
-        var res=await axios.put(`https://memogramapp.herokuapp.com/api/post/comment/delete/`+postId+'/'+commentId,{userid:userId});
+        var res=await axios.put(`/api/post/comment/delete/`+postId+'/'+commentId,{userid:userId});
         if(res.data==="Comment Deleted Successfully"){
             io.emit("commentdeleted")
         }
@@ -155,7 +156,7 @@ io.sockets.on('connection',(socket)=>{
    socket.on('commentpost',async({postId, user, text})=>{
     try{
         console.log("commentpost")
-        const res=await axios.post('https://memogramapp.herokuapp.com/api/post/commenting/'+postId,{text,userid:user._id})
+        const res=await axios.post('/api/post/commenting/'+postId,{text,userid:user._id})
         if(res){
             console.log(res.data)
             let usersconnected=AllConnectedUsers();
@@ -172,7 +173,7 @@ io.sockets.on('connection',(socket)=>{
 
    socket.on('followrequest',async({userid,fu_id})=>{
        try{
-        const res=await axios.post(`https://memogramapp.herokuapp.com/api/followtask/follow`,{userid:userid,fu_id:fu_id});
+        const res=await axios.post(`/api/followtask/follow`,{userid:userid,fu_id:fu_id});
 
         if(res){
             
@@ -199,7 +200,8 @@ io.sockets.on('connection',(socket)=>{
 app.get('/',(req,res)=>{
     res.status(200).send("API is Running")
 })
- server.listen(process.env.PORT || 5000, (req, res) => {
+
+server.listen(process.env.PORT || 5000, (req, res) => {
     console.log("Server is running on the port 5000")
 })
 app.use('/api/login',loginroute);
