@@ -121,7 +121,7 @@ router.post('/follow',asynchandler(async(req,res)=>{
 
 
   }catch(e){
-    //   console.log(e);
+      console.log(e);
       return res.status(500).send(e);
   }
    
@@ -315,7 +315,7 @@ router.post('/unfollow',asynchandler(async(req,res)=>{
         }
     }
     catch(e){
-        // console.log(e)
+        console.log(e)
         return res.status(500).send("Internal server error");
     }
 }))
