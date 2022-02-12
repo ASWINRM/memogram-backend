@@ -64,7 +64,31 @@ router.get('/',asynchandler(async(req,res)=>{
                 return res.status(200).send(ChatsToBeSent)
             }
         }else{
-            return res.status(200).send("no chats")
+            var user=await users.findById(userid);
+      
+            if(user){
+                var followings=await Follower.find({user: userid.trim()}).populate('following.user')
+                if(followings){
+                    console.log(followings[0].following);
+
+                    let  ChatsToBeSent=await followings[0].following.map((fol)=>{
+                        return (
+                            {
+                                messagesWith: fol.user._id,
+                                name: fol.user.name,
+                                profilepicurl: fol.user.profilepicurl,
+                                lastMessage:"",
+                                date: ""
+                              }
+                        )
+                    })
+                    if(ChatsToBeSent){
+                        return res.status(200).send(ChatsToBeSent);
+                    }
+                  
+                }
+            }
+            
         }
     }catch(e){
         console.log(e)
