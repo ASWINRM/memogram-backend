@@ -146,11 +146,15 @@ router.post('/newmsg',asynchandler(async(req,res)=>{
 }))
 
 
+
 router.get('/finduser/:userid',asynchandler(async(req,res)=>{
     let userid=req.params.userid
    
     // console.log(userid)
     try{
+        if(userid==="nochats"){
+            return res.status(200).send("nochats");
+        }
         // console.log("In finding users")
         let user=await users.findById(userid)
         // console.log(userid)
