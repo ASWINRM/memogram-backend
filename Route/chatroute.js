@@ -68,7 +68,7 @@ router.get('/',asynchandler(async(req,res)=>{
       
             if(user){
                 var followings=await Follower.find({user: userid.trim()}).populate('following.user')
-                if(followings){
+                if(followings && following[0].following.length>0){
                     console.log(followings[0].following);
 
                     let  ChatsToBeSent=await followings[0].following.map((fol)=>{
@@ -86,6 +86,14 @@ router.get('/',asynchandler(async(req,res)=>{
                         return res.status(200).send(ChatsToBeSent);
                     }
                   
+                }else{
+                    let ChatsToBeSent=[{
+                        messagesWith: user._id,
+                        name: user.name,
+                        profilepicurl: user.profilepicurl,
+                        lastMessage:"",
+                        date: ""
+                    }]
                 }
             }
             
