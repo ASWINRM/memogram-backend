@@ -61,6 +61,7 @@ router.get('/',asynchandler(async(req,res)=>{
             })
 
             if(ChatsToBeSent){
+                console.log(ChatsToBeSent)
                 return res.status(200).send({ChatsToBeSent:ChatsToBeSent,about:"chats found"})
             }
         }else{
@@ -83,6 +84,7 @@ router.get('/',asynchandler(async(req,res)=>{
                         )
                     })
                     if(ChatsToBeSent){
+                        console.log(ChatsToBeSent)
                         return res.status(200).send({ChatsToBeSent:ChatsToBeSent,about:"chats not found"});
                     }
                   
@@ -95,6 +97,7 @@ router.get('/',asynchandler(async(req,res)=>{
                         date: ""
                     }]
                     if(ChatsToBeSent){
+                        console.log(ChatsToBeSent)
                         return res.status(200).send({ChatsToBeSent:ChatsToBeSent,about:"chats not found"});
                     }
                 }
