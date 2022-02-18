@@ -69,7 +69,7 @@ router.get('/',asynchandler(async(req,res)=>{
       
             if(user){
                 var followings=await Follower.find({user: userid.trim()}).populate('following.user')
-                if(followings && following[0].following &&following[0].following.length>0){
+                if(followings && followings[0].following &&followings[0].following.length>0){
                     console.log(followings[0].following);
 
                     let  ChatsToBeSent=await followings[0].following.map((fol)=>{
