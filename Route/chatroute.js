@@ -240,7 +240,7 @@ router.get('/MessageNotification',asynchandler(async(req,res)=>{
 }))
 
 router.post('/setNotificationRead',asynchandler(async(req,res)=>{
-    let  usertoNotify;
+    
     if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
         console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
         const token = req.header('Authorization').replace('Bearer','').trim();
@@ -269,6 +269,8 @@ router.post('/setNotificationRead',asynchandler(async(req,res)=>{
             if(user.unreadMessage){
               let updateduser=await users.findByIdAndUpdate(usertoNotify,{unreadMessage:false},{new:true});
                 return res.status(200).send("updated")
+          }else{
+              return res.status(200).send("updated")
           }
         }
   
