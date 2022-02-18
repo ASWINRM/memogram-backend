@@ -246,7 +246,7 @@ router.get('/MessageNotification',asynchandler(async(req,res)=>{
 }))
 
 router.post('/setNotificationRead',asynchandler(async(req,res)=>{
-    
+    let usertoNotify;
     if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
         console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
         const token = req.header('Authorization').replace('Bearer','').trim();
@@ -259,7 +259,7 @@ router.post('/setNotificationRead',asynchandler(async(req,res)=>{
          const {userId}  =  jwt.verify(token, process.env.jwtsecret);
         if(userId){
             // console.log(jwt.verify(token, process.env.jwtsecret));
-            // console.log(userId);
+            console.log(userId);
             usertoNotify = userId;
             // console.log(usertoNotify);
           
