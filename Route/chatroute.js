@@ -47,7 +47,7 @@ router.get('/',asynchandler(async(req,res)=>{
         let userchat=await Chat.findOne({user:userid}).populate('user chats.messagesWith');
 
         if(userchat.chats.length>0){
-
+                  console.log("dei dei")
             let ChatsToBeSent=await userchat.chats.map((chat)=>{
                 return (
                     {
