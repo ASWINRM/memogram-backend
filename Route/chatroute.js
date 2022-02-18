@@ -129,7 +129,7 @@ router.get("/summa",asynchandler(async(req,res)=>{
                 // }
                 return res.status(200).send ({chat:messages})
             }else{
-                return {error:"no chat found"}
+                return {chat:""}
             }
           }catch(e){
             //    console.log(e)
