@@ -1,5 +1,6 @@
 
 import Chat from '../database/model/Chatmodel.js';
+import Follower from '../database/model/Follower.js';
 import MessageNotification from '../database/model/MessageNotificationModel.js';
 const users=[]
 
@@ -41,14 +42,14 @@ export const loadmessage=async(userId,messagesWith)=>{
             let messages=await response.chats.find((chat)=>chat.messagesWith._id.toString()===messagesWith);
             
             if(!messages){
-               return ({chat:"no messages found"})
+               return {chat:"no messages found"}
             }
             // if(messages){
             //     console.log(messages)
             // }
           return {chat:messages}
         }else{
-            return {error:"no chat found"}
+           return {chat:""}
         }
       }catch(e){
            console.log(e)

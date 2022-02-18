@@ -61,7 +61,7 @@ router.get('/',asynchandler(async(req,res)=>{
             })
 
             if(ChatsToBeSent){
-                return res.status(200).send(ChatsToBeSent)
+                return res.status(200).send({ChatsToBeSent,about:"chats found"})
             }
         }else{
             var user=await users.findById(userid);
@@ -83,7 +83,7 @@ router.get('/',asynchandler(async(req,res)=>{
                         )
                     })
                     if(ChatsToBeSent){
-                        return res.status(200).send(ChatsToBeSent);
+                        return res.status(200).send({ChatsToBeSent,about:"chats not found"});
                     }
                   
                 }else{
@@ -94,6 +94,9 @@ router.get('/',asynchandler(async(req,res)=>{
                         lastMessage:"",
                         date: ""
                     }]
+                    if(ChatsToBeSent){
+                        return res.status(200).send({ChatsToBeSent,about:"chats not found"});
+                    }
                 }
             }
             
