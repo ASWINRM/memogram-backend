@@ -40,7 +40,7 @@ const io = new Server(server,{cors: {
     origin: "*"
   }
 });
-router.get('/',(req,res)=>{
+app.get('/',(req,res)=>{
     res.status(200).send("API is Running")
 })
 app.use('/api',router)
@@ -231,4 +231,4 @@ process.on('unhandledRejection', (err, Promise) => {
     server.close(() => process.exit(1))
 })
 
-export default serverless(server)
+export default server
