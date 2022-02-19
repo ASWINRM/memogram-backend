@@ -62,8 +62,10 @@ io.sockets.on('connection',(socket)=>{
         const users=await adduser(userId,socket.id)
         console.log("userid"+userId)
         console.log(users)
+        let ruser= await usersconnected.find((user)=>user.userId===userId);
+        console.log("connect ruser:"+ruser)
         setInterval(()=>{
-           io.emit("connectedusers",{users:users.filter((user)=>user.userId!==userId)})
+           io.to(ruser.socketId).emit("connectedusers",{users:users})
         },10000)
     })
 
@@ -73,7 +75,7 @@ io.sockets.on('connection',(socket)=>{
         // console.log(usersconnected)
         let ruser= await usersconnected.find((user)=>user.userId===userId);
 
-        // console.log(ruser)
+        console.log("ruser"+ruser)
         if(chat!=="no messages found"){
             // console.log("***********************************************************************")
             // console.log("chat"+ chat)
