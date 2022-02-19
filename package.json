@@ -2,10 +2,9 @@
   "name": "backend",
   "version": "1.0.0",
   "engines": {
- 
     "node": "16.13.0",
-    "npm":"8.1.0"
-    },
+    "npm": "8.1.0"
+  },
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -31,11 +30,13 @@
     "multer": "^1.4.4",
     "multer-gridfs-storage": "^5.0.2",
     "multer-storage-cloudinary": "^4.0.0",
+    "netlify-lambda": "^2.0.15",
     "nodemailer": "^6.7.2",
     "nodemailer-express-handlebars": "^4.0.0",
     "nodemon": "^2.0.15",
     "otp-generator": "^4.0.0",
     "path": "^0.12.7",
+    "serverless-http": "^2.7.0",
     "socket.io": "^4.4.1",
     "twilio": "^3.73.0",
     "uuid": "^8.3.2",

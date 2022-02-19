@@ -1,0 +1,11 @@
+
+
+  [build]
+  base = "/"
+  publish = "dist/"
+  command  = "npm run build"
+  functions = "server.js"
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

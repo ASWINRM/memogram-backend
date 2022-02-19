@@ -31,14 +31,19 @@ import NotificationRoute from './Route/NotificationsRoute.js'
 import chatroute from './Route/chatroute.js'
 import {adduser,removeuser,loadmessage,sendmsg,AllConnectedUsers} from './utils/roomAction.js'
 import MessageNotification from './database/model/MessageNotificationModel.js';
+const serverless = require("serverless-http");
 import  {Server}  from 'socket.io';
 import { createServer } from 'http';
+const router = express.Router()
 const server = createServer(app); 
 const io = new Server(server,{cors: {
     origin: "*"
   }
 });
-
+router.get('/',(req,res)=>{
+    res.status(200).send("API is Running")
+})
+app.use('/api',router)
 app.use('/api/login',loginroute);
 app.use('/api/signup',signuproute);
 app.use('/api/extra',extraroute);
@@ -212,9 +217,7 @@ io.sockets.on('connection',(socket)=>{
 
 })
 
-app.get('/',(req,res)=>{
-    res.status(200).send("API is Running")
-})
+
 
 server.listen(process.env.PORT || 5000, (req, res) => {
     console.log("Server is running on the port 5000")
@@ -227,3 +230,5 @@ process.on('unhandledRejection', (err, Promise) => {
     // console.log("logged error " + err)
     server.close(() => process.exit(1))
 })
+
+export default serverless(server)
