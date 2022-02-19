@@ -31,7 +31,7 @@ import NotificationRoute from './Route/NotificationsRoute.js'
 import chatroute from './Route/chatroute.js'
 import {adduser,removeuser,loadmessage,sendmsg,AllConnectedUsers} from './utils/roomAction.js'
 import MessageNotification from './database/model/MessageNotificationModel.js';
-const serverless = require("serverless-http");
+
 import  {Server}  from 'socket.io';
 import { createServer } from 'http';
 const router = express.Router()
