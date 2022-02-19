@@ -93,11 +93,11 @@ io.sockets.on('connection',(socket)=>{
             // io.emit("messagesent",newChat)
 
             let usersconnected=AllConnectedUsers();
-            console.log(usersconnected)
+            console.log("sendinguser"+ usersconnected)
             let receiveruser= await usersconnected.find((user)=>user.userId===msgToId);
          
             if(receiveruser){
-                // console.log(receiveruser)
+                console.log("receiveruser"+receiveruser)
                 // console.log("readmsg")
                 
                     io.to(receiveruser.socketId).emit("newmsgreceived",newChat)
