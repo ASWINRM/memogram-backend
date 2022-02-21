@@ -214,8 +214,10 @@ io.sockets.on('connection',(socket)=>{
    })
 
 
-    socket.on('disconnect',({userId})=>{
+    socket.on('disconnec',({userId})=>{
+        console.log(userId)
         let usersconnected=AllConnectedUsers();
+        console.log(usersconnected)
         let receiveruser= usersconnected.find((user)=>user.userId.toString()===userId.toString());
         console.log(receiveruser);
         removeuser(receiveruser.socketId)
