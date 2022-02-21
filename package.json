@@ -32,7 +32,6 @@
     "multer-storage-cloudinary": "^4.0.0",
     "netlify-lambda": "^2.0.15",
     "nodemailer": "^6.7.2",
-    "nodemailer-express-handlebars": "^4.0.0",
     "nodemon": "^2.0.15",
     "otp-generator": "^4.0.0",
     "path": "^0.12.7",
