@@ -56,6 +56,8 @@ app.use('/api/forgot',forgotroute)
 app.use('/api/notification',NotificationRoute)
 app.use('/api/chat',chatroute)
 
+
+
 io.sockets.on('connection',(socket)=>{
 
     socket.on('join',async({userId})=>{
@@ -212,8 +214,11 @@ io.sockets.on('connection',(socket)=>{
    })
 
 
-    socket.on('disconnect',()=>{
-        removeuser(socket.id)
+    socket.on('disconnect',({userId})=>{
+        let receiveruser= await usersconnected.find((user)=>user.userId.toString()===userId);
+        console.log(receiveruser);
+        removeuser(receiveruser.socketId)
+        socket.disconnect();
         console.log("user disconnected")
     })
 
