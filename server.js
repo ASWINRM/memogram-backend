@@ -66,9 +66,8 @@ io.on('connection',(socket)=>{
         console.log(users)
         let ruser= await usersconnected.find((user)=>user.userId===userId);
         console.log("connect ruser:"+ruser)
-        setInterval(()=>{
-           io.to(ruser.socketId).emit("connectedusers",{users:users})
-        },10000)
+        io.to(ruser.socketId).emit("connectedusers",{users:users})
+        
     })
 
     socket.on("loadmessage",async({userId,messagesWith})=>{
