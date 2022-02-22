@@ -58,7 +58,7 @@ app.use('/api/chat',chatroute)
 
 
 
-io.sockets.on('connection',(socket)=>{
+io.on('connection',(socket)=>{
 
     socket.on('join',async({userId})=>{
         const users=await adduser(userId,socket.id)
