@@ -70,6 +70,13 @@ io.on('connection',(socket)=>{
         
     })
 
+    socket.on('connectedusers',({userId})=>{
+        let ruser= await usersconnected.find((user)=>user.userId===userId);
+        console.log("connect ruser:"+ruser)
+        io.to(ruser.socketId).emit("connectedusers",{users:users})
+        
+    })
+
     socket.on("loadmessage",async({userId,messagesWith})=>{
         let {chat}=await loadmessage(userId,messagesWith);
         let usersconnected=AllConnectedUsers();
