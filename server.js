@@ -70,7 +70,7 @@ io.on('connection',(socket)=>{
         
     })
 
-    socket.on('connectedusers',({userId})=>{
+    socket.on('connectedusers',async({userId})=>{
         let ruser= await usersconnected.find((user)=>user.userId===userId);
         console.log("connect ruser:"+ruser)
         io.to(ruser.socketId).emit("connectedusers",{users:users})
