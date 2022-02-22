@@ -32,8 +32,8 @@ import chatroute from './Route/chatroute.js'
 import {adduser,removeuser,loadmessage,sendmsg,AllConnectedUsers} from './utils/roomAction.js'
 import MessageNotification from './database/model/MessageNotificationModel.js';
 
-// import  {Server}  from 'socket.io';
-// import { createServer } from 'http';
+import  {Server}  from 'socket.io';
+import { createServer } from 'http';
 // import { Server } from 'ws'
 const router = express.Router()
 const server = createServer(app); 
