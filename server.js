@@ -32,8 +32,9 @@ import chatroute from './Route/chatroute.js'
 import {adduser,removeuser,loadmessage,sendmsg,AllConnectedUsers} from './utils/roomAction.js'
 import MessageNotification from './database/model/MessageNotificationModel.js';
 
-import  {Server}  from 'socket.io';
-import { createServer } from 'http';
+// import  {Server}  from 'socket.io';
+// import { createServer } from 'http';
+// import { Server } from 'ws'
 const router = express.Router()
 const server = createServer(app); 
 const io = new Server(server,{cors: {
@@ -226,8 +227,11 @@ io.on('connection',(socket)=>{
         console.log(usersconnected)
         let receiveruser= usersconnected.find((user)=>user.userId.toString()===userId.toString());
         console.log(receiveruser);
-        removeuser(receiveruser.socketId)
-        socket.disconnect();
+        if(receiveruser){
+            removeuser(receiveruser.socketId)
+        }
+        
+       
         console.log("user disconnected")
     })
 
