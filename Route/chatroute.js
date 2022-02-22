@@ -23,6 +23,7 @@ dotenv.config();
 router.get('/',asynchandler(async(req,res)=>{
     try{
         let  userid;
+        console.log("mamey enetered")
         if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
             console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
             const token = req.header('Authorization').replace('Bearer','').trim();

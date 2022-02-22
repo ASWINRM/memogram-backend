@@ -44,9 +44,9 @@ export const loadmessage=async(userId,messagesWith)=>{
             if(!messages){
                return {chat:"no messages found"}
             }
-            // if(messages){
-            //     console.log(messages)
-            // }
+            if(messages){
+                console.log("messages :"+messages)
+            }
           return {chat:messages}
         }else{
            return {chat:""}
