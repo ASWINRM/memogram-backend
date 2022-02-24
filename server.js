@@ -76,6 +76,7 @@ io.on('connection',(socket)=>{
         const users=await adduser(userId,socket.id)
         console.log("userid"+userId)
         console.log(users)
+        let usersconnected=AllConnectedUsers();
         let ruser= await usersconnected.find((user)=>user.userId===userId);
         console.log("connect ruser:"+ruser)
         io.to(ruser.socketId).emit("connectedusers",{users:users})
@@ -83,6 +84,7 @@ io.on('connection',(socket)=>{
     })
 
     socket.on('connectedusers',async({userId})=>{
+        let usersconnected=AllConnectedUsers();
         let ruser= await usersconnected.find((user)=>user.userId===userId);
         console.log("connect ruser:"+ruser)
         io.to(ruser.socketId).emit("connectedusers",{users:users})
