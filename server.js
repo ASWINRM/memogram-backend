@@ -77,7 +77,7 @@ io.on('connection',(socket)=>{
         console.log("userid"+userId)
         console.log(users)
         let usersconnected=AllConnectedUsers();
-        let ruser= await usersconnected.find((user)=>user.userId===userId);
+        let ruser= await usersconnected. AllConnectedUser.find((user)=>user.userId===userId);
         console.log("connect ruser:"+ruser)
         io.to(ruser.socketId).emit("connectedusers",{users:users})
         
@@ -85,7 +85,7 @@ io.on('connection',(socket)=>{
 
     socket.on('connectedusers',async({userId})=>{
         let usersconnected=AllConnectedUsers();
-        let ruser= await usersconnected.find((user)=>user.userId===userId);
+        let ruser= await usersconnected. AllConnectedUser.find((user)=>user.userId===userId);
         console.log("connect ruser:"+ruser)
         io.to(ruser.socketId).emit("connectedusers",{users:users})
         
@@ -95,7 +95,7 @@ io.on('connection',(socket)=>{
         let {chat}=await loadmessage(userId,messagesWith);
         let usersconnected=AllConnectedUsers();
         console.log("loadmessage")
-        let ruser= await usersconnected.find((user)=>user.userId===userId);
+        let ruser= await usersconnected. AllConnectedUser.find((user)=>user.userId===userId);
 
         console.log("ruser"+ruser)
         if(chat!=="no messages found"){
@@ -117,8 +117,8 @@ io.on('connection',(socket)=>{
             // io.emit("messagesent",newChat)
 
             let usersconnected=AllConnectedUsers();
-            console.log("sendinguser"+ usersconnected)
-            let receiveruser= await usersconnected.find((user)=>user.userId===msgToId);
+            console.log("sendinguser"+ usersconnected. AllConnectedUser)
+            let receiveruser= await usersconnected.AllConnectedUser.find((user)=>user.userId===msgToId);
          
             if(receiveruser){
                 console.log("receiveruser"+receiveruser)
@@ -145,7 +145,7 @@ io.on('connection',(socket)=>{
 
    socket.on('likepost',async({userId,postId})=>{
     let usersconnected=AllConnectedUsers();
-    console.log(usersconnected)
+    console.log(usersconnected. AllConnectedUser)
     try{
        
             
@@ -155,7 +155,7 @@ io.on('connection',(socket)=>{
            if(resp && resp.data.comment==="successfully liked"){
             io.emit('postliked');
             console.log(usersconnected)
-            let receiveruser= await usersconnected.find((user)=>user.userId.toString()===resp.data.user.toString());
+            let receiveruser= await usersconnected. AllConnectedUser.find((user)=>user.userId.toString()===resp.data.user.toString());
             
             if(receiveruser){
                  console.log(receiveruser)
@@ -205,7 +205,7 @@ io.on('connection',(socket)=>{
             console.log(res.data)
             let usersconnected=AllConnectedUsers();
             
-            let receiveruser= await usersconnected.find((user)=>user.userId.toString()===res.data.user.toString());
+            let receiveruser= await usersconnected. AllConnectedUser.find((user)=>user.userId.toString()===res.data.user.toString());
             console.log(receiveruser);
             io.emit('commented',{data:res.data.comment});
             io.to(receiveruser.socketId).emit('newcommentNotification',{data:res.data})
@@ -223,7 +223,7 @@ io.on('connection',(socket)=>{
             
             let usersconnected=AllConnectedUsers();
             
-            let receiveruser= await usersconnected.find((user)=>user.userId.toString()===fu_id);
+            let receiveruser= await usersconnected. AllConnectedUser.find((user)=>user.userId.toString()===fu_id);
             console.log(receiveruser);
             
             io.to(receiveruser.socketId).emit('followerNotification',{data:res.data})
@@ -238,11 +238,11 @@ io.on('connection',(socket)=>{
         console.log(userId)
         let usersconnected=AllConnectedUsers();
         console.log(usersconnected)
-        let receiveruser= usersconnected.find((user)=>user.userId.toString()===userId.toString());
+        let receiveruser= usersconnected.AllConnectedUser.find((user)=>user.userId.toString()===userId.toString());
         console.log(receiveruser);
         if(receiveruser){
             removeuser(receiveruser.socketId)
-        }
+        } 
         
        
         console.log("user disconnected")

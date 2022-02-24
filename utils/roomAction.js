@@ -152,6 +152,7 @@ export const getchats=async(userId)=>{
 }
 
 export const AllConnectedUsers=()=>{
-   return users;
+    console.log("In allconnected users :"+users);
+   return { AllConnectedUser:users};
 }
 
