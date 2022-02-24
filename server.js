@@ -57,7 +57,10 @@ app.use('/api/forgot',forgotroute)
 app.use('/api/notification',NotificationRoute)
 app.use('/api/chat',chatroute)
 
-
+io.configure(function () { 
+    io.set("transports", ["xhr-polling"]); 
+    io.set("polling duration", 10); 
+  });
 
 io.on('connection',(socket)=>{
 
