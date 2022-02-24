@@ -31,16 +31,12 @@ import NotificationRoute from './Route/NotificationsRoute.js'
 import chatroute from './Route/chatroute.js'
 import {adduser,removeuser,loadmessage,sendmsg,AllConnectedUsers} from './utils/roomAction.js'
 import MessageNotification from './database/model/MessageNotificationModel.js';
-
+import Socket from 'socket.io'
 import  {Server}  from 'socket.io';
 import { createServer } from 'http';
 // import { Server } from 'ws'
 const router = express.Router()
 const server = createServer(app); 
-const io = new Server(server,{cors: {
-    origin: "*"
-  }
-});
 app.get('/',(req,res)=>{
     res.status(200).send("API is Running")
 })
@@ -56,6 +52,15 @@ app.use('/api/otp',otproute)
 app.use('/api/forgot',forgotroute)
 app.use('/api/notification',NotificationRoute)
 app.use('/api/chat',chatroute)
+server.listen(process.env.PORT || 5000, (req, res) => {
+    console.log("Server is running on the port 5000")
+})
+// const io = new Server(server,{cors: {
+//     origin: "*"
+//   }
+// });
+const io=Socket.listen(app);
+
 
 io.configure(function () { 
     io.set("transports", ["xhr-polling"]); 
@@ -242,9 +247,7 @@ io.on('connection',(socket)=>{
 
 
 
-server.listen(process.env.PORT || 5000, (req, res) => {
-    console.log("Server is running on the port 5000")
-})
+
 
 
 
