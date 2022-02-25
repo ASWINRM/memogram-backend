@@ -88,7 +88,7 @@ router.post('/update',asynchandler(async(req,res)=>{
     
            
     
-           if(profilepicurl && profilefields){
+           if(profilepicurl ){
             //    console.log(profile);
                let user=await users.findById(userid);
                user['profilepicurl']=profilepicurl;
