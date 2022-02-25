@@ -146,11 +146,10 @@ router.put('/delete/:id',asynchandler(async(req,res)=>{
     const id=req.params.id;
     let userid;
    try{
-    if (req.header('Authorization') 
-    || req.header('Authorization').startsWith('Bearer')) {
+    if (req.header('Authorization')) {
         // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
         // console.log(req.header('Authorization'));
-        const token = req.header('Authorization').replace('Bearer ', '')|| req.header('Authorization');
+        const token = req.header('Authorization').trim();
         // if(token){
         //     console.log(token);
         // }

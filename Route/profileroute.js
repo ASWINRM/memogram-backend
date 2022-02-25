@@ -162,9 +162,9 @@ router.post('/update/password',asynchandler(async(req,res)=>{
 
     try{
         let  userid;
-        if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
+        if (req.header('Authorization')) {
             console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-            const token = req.header('Authorization').replace('Bearer','').trim();
+            const token = req.header('Authorization').trim();
             // if(token){
             //     console.log(token);
             // }
@@ -229,9 +229,9 @@ router.post('/settings/messagepopup',asynchandler(async(req,res)=>{
 
     try{
         let  userid;
-        if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
+        if (req.header('Authorization') ) {
             // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-            const token = req.header('Authorization').replace('Bearer','').trim();
+            const token = req.header('Authorization').trim();
             if(token){
                 console.log(token);
             }
