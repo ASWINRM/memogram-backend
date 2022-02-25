@@ -121,7 +121,7 @@ io.on('connection',(socket)=>{
             let receiveruser= await usersconnected.AllConnectedUser.find((user)=>user.userId===msgToId);
          
             if(receiveruser){
-                console.log("receiveruser"+receiveruser)
+                console.log("receiveruser"+receiveruser.socketId)
                 // console.log("readmsg")
                 
                     io.to(receiveruser.socketId).emit("newmsgreceived",newChat)
