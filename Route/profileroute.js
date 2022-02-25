@@ -100,7 +100,7 @@ router.post('/update',asynchandler(async(req,res)=>{
            if(profilepicurl && profile){
             //    console.log(profile);
                let user=await users.findById(userid);
-               user.profilepicurl=profilepicurl;
+               user['profilepicurl']=profilepicurl;
                await user.save();
             //    console.log("profile updation successfull")
                return res.status(200).send("updated");
