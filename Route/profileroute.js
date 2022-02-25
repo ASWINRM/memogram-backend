@@ -21,16 +21,17 @@ dotenv.config();
 
 router.post('/update',asynchandler(async(req,res)=>{
     try{
-
-        console.log("profile updatedation");
-        const {
+     const {
             bio,
             facebook,
             twitter,
             instagram
            }=req.body.user
            console.log(req.body.user)
-           let {profilepicurl}=req.body.profilepicurl
+        let { profilepicurl } = req.body.profilepicurl
+        console.log("profile updatedation");
+   
+        
            console.log(bio,
             facebook,
             twitter,
@@ -59,10 +60,11 @@ router.post('/update',asynchandler(async(req,res)=>{
                console.log("Sorry we could not found user");
             }
         }
-       
-        let profilefields = await Profile.findOne({user:userid });
+        if (userid) {
+            let profilefields = await Profile.findOne({user:userid });
          
-    console.log(profilefields)
+        console.log("profilefields")
+        console.log(profilefields)
            
             if(bio){
                 profilefields['bio']=bio;
@@ -85,15 +87,15 @@ router.post('/update',asynchandler(async(req,res)=>{
            }
            await profilefields.save();
             
+           console.log("updated profile")
+           console.log(profilefields)
     
-           
-    
-           if(profilepicurl ){
+           if(profilepicurl){
             //    console.log(profile);
                let user=await users.findById(userid);
                user['profilepicurl']=profilepicurl;
                await user.save();
-            //    console.log("profile updation successfull")
+               console.log("profile updation successfull")
                return res.status(200).send("updated");
            }else if(profile){
             
@@ -102,6 +104,11 @@ router.post('/update',asynchandler(async(req,res)=>{
                return res.status(200).send("updated");
            }
            
+        } else {
+            console.log("updation failed")
+            return res.status(200).send("updation failed")
+       }
+       
     }catch(e){
         // console.log(e);
     }
