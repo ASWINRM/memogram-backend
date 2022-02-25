@@ -27,7 +27,7 @@ router.post('/update',asynchandler(async(req,res)=>{
             twitter,
             instagram
            }=req.body.user
-           console.log(req.body.user)
+           
         let { profilepicurl } = req.body.profilepicurl
         console.log("profile updatedation");
    
@@ -42,7 +42,7 @@ router.post('/update',asynchandler(async(req,res)=>{
         let  userid;
         if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
             // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-            const token = req.header('Authorization').replace('Bearer','').trim();
+            const token = req.header('Authorization').trim();
             if(token){
                 console.log(token);
             }
