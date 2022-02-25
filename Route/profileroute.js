@@ -27,12 +27,10 @@ router.post('/update',asynchandler(async(req,res)=>{
             bio,
             facebook,
             twitter,
-            instagram,
-            profilepicurl,
-            social
+            instagram
            }=req.body.user
            console.log(req.body.user)
-
+           let {profilepicurl}=req.body.profilepicurl
            console.log(bio,
             facebook,
             twitter,
@@ -73,16 +71,16 @@ router.post('/update',asynchandler(async(req,res)=>{
             
            
            if(facebook){
-               profilefields.social['facebook']=facebook;
+               profilefields.social.facebook=facebook;
               
             //    profile[0].social.facebook=facebook;
            }
            if(twitter){
-               profilefields.social['twitter']=twitter;
+               profilefields.social.twitter=twitter;
             //    profile[0].social.twitter=twitter;
            }
            if(instagram){
-               profilefields.social['instagram']=instagram;
+               profilefields.social.instagram=instagram;
             //    profile[0].social.instagram=instagram;
            }
            await profilefields.save();
