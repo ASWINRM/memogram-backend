@@ -100,7 +100,7 @@ io.on('connection',(socket)=>{
         console.log("ruser"+ruser)
         if(chat!=="no messages found" && ruser){
             // console.log("***********************************************************************")
-            console.log(ruser)
+            console.log(ruser.socketId)
             console.log("chat"+ chat)
             io.to(ruser.socketId).emit("messageloaded",chat)
         }else if(chat!=="no messages found"){
