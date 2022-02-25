@@ -76,22 +76,15 @@ router.post('/update',asynchandler(async(req,res)=>{
                profilefields.social['facebook']=facebook;
               
             //    profile[0].social.facebook=facebook;
-           }else{
-            profilefields.social['facebook']=social.facebook;
            }
            if(twitter){
                profilefields.social['twitter']=twitter;
             //    profile[0].social.twitter=twitter;
-           }else{
-            profilefields.social['twitter']=social.twitter
            }
            if(instagram){
                profilefields.social['instagram']=instagram;
             //    profile[0].social.instagram=instagram;
-           }else{
-            profilefields.social['instagram']=social.instagram;
            }
-    
            await profilefields.save();
             
     
