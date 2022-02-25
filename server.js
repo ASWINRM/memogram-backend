@@ -98,11 +98,15 @@ io.on('connection',(socket)=>{
         let ruser= await usersconnected. AllConnectedUser.find((user)=>user.userId===userId);
 
         console.log("ruser"+ruser)
-        if(chat!=="no messages found"){
+        if(chat!=="no messages found" && ruser){
             // console.log("***********************************************************************")
+            console.log(ruser)
             console.log("chat"+ chat)
             io.to(ruser.socketId).emit("messageloaded",chat)
-        }else{
+        }else if(chat!=="no messages found"){
+             console.log(ruser)
+        }
+        else{
             console.log("no msg found")
             io.emit("nomsgfound")
         }
