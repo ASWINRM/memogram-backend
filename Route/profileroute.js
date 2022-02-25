@@ -62,16 +62,16 @@ router.post('/update',asynchandler(async(req,res)=>{
             }
         }
        
-
-            let profilefields={}
+        let profilefields = await Profile.findOne({ user: userid });
+         
     
-            profilefields.user=userid;
+           
             if(bio){
                 profilefields.bio=bio;
                 // profile[0].bio=bio;
             }
             
-           profilefields.social={ }
+           
            if(facebook){
                profilefields.social['facebook']=facebook;
               
@@ -92,7 +92,7 @@ router.post('/update',asynchandler(async(req,res)=>{
             profilefields.social['instagram']=social.instagram;
            }
     
-           let profile=await Profile.findOneAndUpdate({user:userid},{$set:profilefields},{new:true});
+       await profilefields.save();
             
     
            
