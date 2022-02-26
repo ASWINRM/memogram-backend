@@ -121,7 +121,7 @@ router.post('/',asynchandler(async(req,res)=>{
     
     await new Profile({
         user:newuser._id,
-        bio:Bio,
+        bio:bio,
         social:profilefields.social   
      }).save();
     
