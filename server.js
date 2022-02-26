@@ -87,7 +87,7 @@ io.on('connection',(socket)=>{
         let usersconnected=AllConnectedUsers();
         let ruser= await usersconnected. AllConnectedUser.find((user)=>user.userId===userId);
         console.log("connect ruser:"+ruser)
-        io.to(ruser.socketId).emit("connectedusers",{users:users})
+        io.to(ruser.socketId).emit("connectedusers",{users:usersconnected})
         
     })
 
@@ -102,7 +102,7 @@ io.on('connection',(socket)=>{
             // console.log("***********************************************************************")
             console.log(ruser.socketId)
             console.log("chat"+ chat)
-            socket.to(ruser.socketId).emit("messageloaded",  chat )
+            io.to(ruser.socketId).emit("messageloaded",chat)
             
         }else if(chat!=="no messages found"){
              console.log(ruser)
