@@ -85,28 +85,10 @@ router.get('/:pagenumber',asynchandler(async(req,res)=>{
         const pagenumber=req.params.pagenumber;
         const size=8;
         let posts;
-        let userid;
+        let userid=req.body.userid;
         const skips=size*(pagenumber-1);
         // console.log(pagenumber);
-        if (req.header('Authorization') 
-        || req.header('Authorization').startsWith('Bearer')) {
-            // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-            // console.log(req.header('Authorization'));
-            const token = req.header('Authorization').replace('Bearer ', '')|| req.header('Authorization');
-            if(token){
-                // console.log(token);
-            }
-            if (!token) {
-                return res.status(401).send("Not Authorized to access the token");
-            }
-            const  {userId}  = jwt.verify(token, process.env.jwtsecret);
-            if(userId){
-                // console.log(userId);
-                userid = userId;
-            }else{
-            //    console.log("Sorry we could not found user");
-            }
-        }
+       
 
         const loggeduser=await Follower.find({user:userid});
         // if(loggeduser){
