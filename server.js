@@ -102,7 +102,7 @@ io.on('connection',(socket)=>{
             // console.log("***********************************************************************")
             console.log(ruser.socketId)
             console.log("chat"+ chat)
-            io.sockets.sockets[ruser.socketId].emit("messageloaded",chat)
+            socket.to(ruser.socketId).emit("messageloaded",  chat )
             
         }else if(chat!=="no messages found"){
              console.log(ruser)
@@ -129,7 +129,7 @@ io.on('connection',(socket)=>{
                 console.log("receiveruser"+receiveruser.socketId)
                 // console.log("readmsg")
                 
-                    io.to(receiveruser.socketId).emit("newmsgreceived",newChat)
+                    socket.to(receiveruser.socketId).emit("newmsgreceived",newChat)
 
                 
            
