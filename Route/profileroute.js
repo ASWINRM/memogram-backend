@@ -50,12 +50,13 @@ router.post('/update',asynchandler(async(req,res)=>{
             if (!token) {
                 return res.status(401).send("Not Authorized to access the token");
             }
-            
+            console.log(process.env.jwtsecret);
+            console.log(jwt.verify(token,process.env.jwtsecret))
              const userId  =jwt.verify(token,process.env.jwtsecret);
             if(userId){
                 // console.log(jwt.verify(token, process.env.jwtsecret));
-                // console.log(userId);
-                userid = userId.id;
+                console.log(userId);
+                userid = userId
                 console.log(userid);
               
             }else{
