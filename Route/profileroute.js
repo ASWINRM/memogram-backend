@@ -213,7 +213,7 @@ router.post('/settings/messagepopup',asynchandler(async(req,res)=>{
     }
 }))
 
-router.get('/finduser/:username', (req, res) => {
+router.get('/finduser/:username', asynchandler(async(req, res) => {
     
      let username=req.params.username;
 
@@ -224,6 +224,6 @@ router.get('/finduser/:username', (req, res) => {
         }
         
     return res.status(200).send(user);
-})
+}))
 
 export default router
