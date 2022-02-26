@@ -99,7 +99,7 @@ router.get('/getuserNotifications',asynchandler(async(req,res)=>{
         }
     }
 
-    let notifications=await Notification.findOne({user:userid}).populate("notifications.user  notifications.post").sort({Date:-1})
+    let notifications=await Notification.findOne({user:userid}).sort({Date:-1}).populate("notifications.user  notifications.post")
 
 
     if(notifications){
