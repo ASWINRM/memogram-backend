@@ -29,7 +29,7 @@ router.post('/update',asynchandler(async(req,res)=>{
             instagram
            }=req.body.user
            
-        let { profilepicurl } = req.body.profilepicurl
+        let  profilepicurl  = req.body.profilepicurl
         console.log("profile updatedation");
    
         
@@ -50,11 +50,12 @@ router.post('/update',asynchandler(async(req,res)=>{
             if (!token) {
                 return res.status(401).send("Not Authorized to access the token");
             }
-             const {userId}  =  jwt.verify(token, process.env.jwtsecret);
+            
+             const userId  =jwt.verify(token,process.env.jwtsecret);
             if(userId){
                 // console.log(jwt.verify(token, process.env.jwtsecret));
                 // console.log(userId);
-                userid = userId;
+                userid = userId.id;
                 console.log(userid);
               
             }else{
