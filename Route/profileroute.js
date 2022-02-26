@@ -213,5 +213,17 @@ router.post('/settings/messagepopup',asynchandler(async(req,res)=>{
     }
 }))
 
+router.get('/finduser/:username', (req, res) => {
+    
+     let username=req.params.username;
+
+        let user=await users.find({username:username});
+    
+        if(!user){
+            return res.status(400).send("user not found");
+        }
+        
+    return res.status(200).send(user);
+})
 
 export default router
