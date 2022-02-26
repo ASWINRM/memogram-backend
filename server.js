@@ -164,7 +164,7 @@ io.on('connection',(socket)=>{
             
             if(receiveruser){
                  console.log(receiveruser)
-                io.to(receiveruser.socketId).emit('newlikenotification',{data:resp.data})
+                socket.to(receiveruser.socketId).emit('newlikenotification',{data:resp.data})
              }
             
            }
