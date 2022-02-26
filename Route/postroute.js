@@ -144,27 +144,9 @@ router.get('/:pagenumber',asynchandler(async(req,res)=>{
 
 router.put('/delete/:id',asynchandler(async(req,res)=>{
     const id=req.params.id;
-    let userid;
+    let userid=req.body.userid;
    try{
-    if (req.header('Authorization')) {
-        // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-        // console.log(req.header('Authorization'));
-        const token = req.header('Authorization').trim();
-        // if(token){
-        //     console.log(token);
-        // }
-        if (!token) {
-            return res.status(401).send("Not Authorized to access the token");
-        }
-        const  {userId}  = jwt.verify(token, process.env.jwtsecret);
-        if(userId){
-            // console.log(userId);
-            req.userId = userId;
-            userid=userId;
-        }else{
-           console.log("Sorry we could not found user");
-        }
-    }
+   
 
     if(id){
         // console.log(id);

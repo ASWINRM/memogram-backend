@@ -29,7 +29,8 @@ router.post('/update',asynchandler(async(req,res)=>{
             instagram
            }=req.body.user
            
-        let  profilepicurl  = req.body.profilepicurl
+        let profilepicurl = req.body.profilepicurl
+        let userid=req.body.userid
         console.log("profile updatedation");
    
         
@@ -40,29 +41,7 @@ router.post('/update',asynchandler(async(req,res)=>{
             profilepicurl)
 
           
-        let  userid;
-        if (req.header('Authorization') || req.header('Authorization').startsWith('Bearer')) {
-            // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-            const token = req.header('Authorization').trim();
-            if(token){
-                console.log(token);
-            }
-            if (!token) {
-                return res.status(401).send("Not Authorized to access the token");
-            }
-            console.log(process.env.jwtsecret);
-            console.log(jwt.verify(token,process.env.jwtsecret))
-             const userId  =jwt.verify(token,process.env.jwtsecret);
-            if(userId){
-                // console.log(jwt.verify(token, process.env.jwtsecret));
-                console.log(userId);
-                userid = userId
-                console.log(userid);
-              
-            }else{
-               console.log("Sorry we could not found user");
-            }
-        }
+       
         if (userid) {
             let profilefields = await Profile.findOne({user:userid });
          
@@ -157,32 +136,15 @@ router.get('/:username',asynchandler(async(req,res)=>{
 
 }))
 
-router.post('/update/password',asynchandler(async(req,res)=>{
+router.post('/update/password', asynchandler(async (req, res) => {
 
-    const {currentpassword,username,newpassword}=req.body;
-
+      const {currentpassword,username,newpassword}=req.body;
+let  userid=req.body.userid
     // console.log(currentpassword,newpassword)
 
     try{
-        let  userid;
-        if (req.header('Authorization')) {
-            console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-            const token = req.header('Authorization').trim();
-            // if(token){
-            //     console.log(token);
-            // }
-            if (!token) {
-                return res.status(401).send("Not Authorized to access the token");
-            }
-             const {userId}  =  jwt.verify(token, process.env.jwtsecret);
-            if(userId){
-                // console.log(jwt.verify(token, process.env.jwtsecret));
-                // console.log(userId);
-                userid = userId;
-                // console.log(userid); 
-            }else{
-            //    console.log("Sorry we could not found user");
-            }
+        
+        
             let user=await users.findById(userid);
             
            
@@ -216,41 +178,21 @@ router.post('/update/password',asynchandler(async(req,res)=>{
                  return res.status(400).send("user could not found")
              }
               
-        }
-    
+            
     
     
     }catch(e){
-
+        console.log(e)
     }
-  
-}))
+ }))
 
 
 
 router.post('/settings/messagepopup',asynchandler(async(req,res)=>{
 
     try{
-        let  userid;
-        if (req.header('Authorization') ) {
-            // console.log("ENTERED AUTH MIDDLEWARE WITH TOKEN")
-            const token = req.header('Authorization').trim();
-            if(token){
-                console.log(token);
-            }
-            if (!token) {
-                return res.status(401).send("Not Authorized to access the token");
-            }
-             const {userId}  =  jwt.verify(token, process.env.jwtsecret);
-            if(userId){
-                // console.log(jwt.verify(token, process.env.jwtsecret));
-                // console.log(userId);
-                userid = userId;
-                // console.log(userid); 
-            }else{
-            //    console.log("Sorry we could not found user");
-            }
-        }
+        let  userid=req.body.userid;
+      
 
         let user=await users.findById(userid);
 
