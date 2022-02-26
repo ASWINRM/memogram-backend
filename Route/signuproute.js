@@ -56,7 +56,7 @@ router.post('/',asynchandler(async(req,res)=>{
             password,
             confirmpassword,
             username,
-            Bio,
+            bio,
             facebook,
             twitter,
             instagram,
@@ -103,7 +103,7 @@ router.post('/',asynchandler(async(req,res)=>{
      let profilefields={}
     
      profilefields.user=newuser._id;
-     profilefields.bio=Bio;
+     profilefields.bio=bio;
     profilefields.social={
         facebook:"",
         twitter:"",
