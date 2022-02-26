@@ -20,7 +20,8 @@ dotenv.config();
 
 
 router.post('/update',asynchandler(async(req,res)=>{
-    try{
+    try {
+        console.log(req.header)
      const {
             bio,
             facebook,
