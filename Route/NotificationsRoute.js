@@ -108,8 +108,8 @@ router.get('/getuserNotifications',asynchandler(async(req,res)=>{
         if(notifications.notifications.length<=0){
             return res.status(200).send("no notifications")
         }
-        
-        return res.status(200).send(notifications.notifications);
+        let rev = notifications.notifications.reverse();
+        return res.status(200).send(rev);
     }
 
 }))
