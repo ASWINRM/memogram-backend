@@ -31,7 +31,7 @@ router.post('/forgotpassword',async(req,res)=>{
         
 
 
-   const href=`http://localhost:3000/resetpassword/${token}`
+   const href=`https://aswinmemogram.netlify.app/resetpassword/${token}`
      const message=`<p>Hey ${user.name
         .split(" ")[0]
         .toString()}, There was a request for password reset. <a href=${href}>Click this link to reset the password </a>   </p>
