@@ -72,6 +72,7 @@ router.post("/token", async (req, res) => {
       }
       console.log(token);
       if (password.length < 6) {
+        console.log(password);
         return res.status(401).send("Password must be atleast 6 characters");
 
        }
