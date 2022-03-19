@@ -70,20 +70,25 @@ router.post("/token", async (req, res) => {
       if (!token) {
         return res.status(401).send("Unauthorized");
       }
-  
-      if (password.length < 6)
+      console.log(token);
+      if (password.length < 6) {
         return res.status(401).send("Password must be atleast 6 characters");
+
+       }
+
   
       const user = await users.findOne({ resetToken: token });
   
       if (!user) {
+        console.log(user);
         return res.status(404).send("User not found");
       }
   
       if (Date.now() > user.expireToken) {
+        console.log(token+" user expire")
         return res.status(401).send("Token expired.Generate new one");
       }
-  
+      console.log(user);
       const salt=await bcrypt.genSalt(10)
       const updatedpasssword= bcrypt.hashSync(password,salt)
        let updateduser=await users.findByIdAndUpdate(user._id,{password:updatedpasssword},{new:true});
@@ -92,7 +97,7 @@ router.post("/token", async (req, res) => {
   
       return res.status(200).send("Password updated");
     } catch (error) {
-      // console.error(error);
+      console.error(error);
       return res.status(500).send("Server Error");
     }
   });
