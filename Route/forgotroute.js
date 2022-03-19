@@ -67,7 +67,8 @@ router.post("/token", async (req, res) => {
     try {
       const { token, password } = req.body;
   
-      if (!token) {
+      if(!token){
+        console.log("notoken" + token);
         return res.status(401).send("Unauthorized");
       }
       console.log(token);
