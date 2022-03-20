@@ -73,7 +73,7 @@ router.post("/token", async (req, res) => {
       }
       console.log(token);
       if (password.length < 6) {
-        console.log(password);
+        console.log("no password length");
         return res.status(401).send("Password must be atleast 6 characters");
 
        }
@@ -82,7 +82,7 @@ router.post("/token", async (req, res) => {
       const user = await users.findOne({ resetToken: token });
   
       if (!user) {
-        console.log(user);
+        console.log("nouser");
         return res.status(404).send("User not found");
       }
   
