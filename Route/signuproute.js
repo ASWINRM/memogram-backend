@@ -63,9 +63,9 @@ router.post('/',asynchandler(async(req,res)=>{
             profilepicurl
            }=req.body.user
 
-        //    if(profilepicurl){
-        //        console.log(profilepicurl);
-        //    }
+           if(profilepicurl){
+               console.log(profilepicurl);
+           }
        if(!validator.isEmail(email)){
         return res.send(402).status("The email id in not in the correct format");
     }
