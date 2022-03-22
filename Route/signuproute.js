@@ -95,7 +95,7 @@ router.post('/',asynchandler(async(req,res)=>{
             email:email.toLowerCase(),
             password:password,
             username:username,
-            profilepicurl:profilepicurl 
+             profilepicurl:profilepicurl!=""?profilepicurl:"https://res.cloudinary.com/memogram/image/upload/v1642075170/memogram/sazypiijphrrca0dxwln.jpg"
         }).save();
          await users.updateOne({username:username},{$set:{password: await makepassword(password)}});
 
